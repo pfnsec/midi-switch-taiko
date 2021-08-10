@@ -1,0 +1,91 @@
+       ---===>Device Information<===---
+English product name: "Taiko Controller"
+
+ConnectionStatus:                  
+Current Config Value:              0x01  -> Device Bus Speed: Full (is not SuperSpeed or higher capable)
+Device Address:                    0x19
+Open Pipes:                           2
+
+          ===>Device Descriptor<===
+bLength:                           0x12
+bDescriptorType:                   0x01
+bcdUSB:                          0x0200
+bDeviceClass:                      0x00  -> This is an Interface Class Defined Device
+bDeviceSubClass:                   0x00
+bDeviceProtocol:                   0x00
+bMaxPacketSize0:                   0x40 = (64) Bytes
+idVendor:                        0x0F0D = HORI CO., LTD.
+idProduct:                       0x00F0
+bcdDevice:                       0x0100
+iManufacturer:                     0x01
+     English (United States)  "HORI CO.,LTD."
+iProduct:                          0x02
+     English (United States)  "Taiko Controller"
+iSerialNumber:                     0x00
+bNumConfigurations:                0x01
+
+          ---===>Open Pipes<===---
+
+          ===>Endpoint Descriptor<===
+bLength:                           0x07
+bDescriptorType:                   0x05
+bEndpointAddress:                  0x02  -> Direction: OUT - EndpointID: 2
+bmAttributes:                      0x03  -> Interrupt Transfer Type
+wMaxPacketSize:                  0x0040 = 0x40 bytes
+bInterval:                         0x05
+
+          ===>Endpoint Descriptor<===
+bLength:                           0x07
+bDescriptorType:                   0x05
+bEndpointAddress:                  0x81  -> Direction: IN - EndpointID: 1
+bmAttributes:                      0x03  -> Interrupt Transfer Type
+wMaxPacketSize:                  0x0040 = 0x40 bytes
+bInterval:                         0x05
+
+       ---===>Full Configuration Descriptor<===---
+
+          ===>Configuration Descriptor<===
+bLength:                           0x09
+bDescriptorType:                   0x02
+wTotalLength:                    0x0029  -> Validated
+bNumInterfaces:                    0x01
+bConfigurationValue:               0x01
+iConfiguration:                    0x00
+bmAttributes:                      0x80  -> Bus Powered
+MaxPower:                          0xFA = 500 mA
+
+          ===>Interface Descriptor<===
+bLength:                           0x09
+bDescriptorType:                   0x04
+bInterfaceNumber:                  0x00
+bAlternateSetting:                 0x00
+bNumEndpoints:                     0x02
+bInterfaceClass:                   0x03  -> HID Interface Class
+bInterfaceSubClass:                0x00
+bInterfaceProtocol:                0x00
+iInterface:                        0x00
+
+          ===>HID Descriptor<===
+bLength:                           0x09
+bDescriptorType:                   0x21
+bcdHID:                          0x0111
+bCountryCode:                      0x00
+bNumDescriptors:                   0x01
+bDescriptorType:                   0x22 (Report Descriptor)
+wDescriptorLength:               0x0050
+
+          ===>Endpoint Descriptor<===
+bLength:                           0x07
+bDescriptorType:                   0x05
+bEndpointAddress:                  0x02  -> Direction: OUT - EndpointID: 2
+bmAttributes:                      0x03  -> Interrupt Transfer Type
+wMaxPacketSize:                  0x0040 = 0x40 bytes
+bInterval:                         0x05
+
+          ===>Endpoint Descriptor<===
+bLength:                           0x07
+bDescriptorType:                   0x05
+bEndpointAddress:                  0x81  -> Direction: IN - EndpointID: 1
+bmAttributes:                      0x03  -> Interrupt Transfer Type
+wMaxPacketSize:                  0x0040 = 0x40 bytes
+bInterval:                         0x05

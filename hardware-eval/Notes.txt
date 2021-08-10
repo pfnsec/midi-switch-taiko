@@ -1,0 +1,9 @@
+The Hori taiko drum seems to have an output endpoint as well.
+Could this be used for some kind of verification/lockout?
+We may need to scrape/capture traffic somehow if this is the case.
+
+Evidently, the nRF52840 DK can power itself as a USB HID.
+It remains to be seen whether or not it can power the MIDI breakout as well.
+The datasheet for the 6n138s optocoupler suggests that current supply requirements
+are very modest. The MIDI breakout board will likely need to have a jumper 
+soldered to accept a 3.3v supply.

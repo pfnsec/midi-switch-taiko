@@ -1,0 +1,4 @@
+MIDI Breakout:
+https://www.hobbytronics.co.uk/midi-breakout
+
+This is a direct line which will require MIDI bitbanging by whatever 
