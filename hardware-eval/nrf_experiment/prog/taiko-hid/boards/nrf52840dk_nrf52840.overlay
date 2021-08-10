@@ -1,0 +1,14 @@
+/* SPDX-License-Identifier: Apache-2.0 */
+/ {
+	aliases {
+		midi = &uart1;
+	};
+};
+
+&uart1 {
+  compatible = "nordic,nrf-uarte";
+  current-speed = <31250>;
+  status = "okay";
+  tx-pin = <14>;
+  rx-pin = <16>;
+};
