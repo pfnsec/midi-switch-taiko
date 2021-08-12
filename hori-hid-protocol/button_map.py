@@ -1,4 +1,3 @@
-
 import hid
 from pprint import pprint
 
@@ -14,14 +13,16 @@ h = hid.device()
 h.open(vid, pid)
 print(f'Device manufacturer: {h.get_manufacturer_string()}')
 
-#res = h.write([3, 1])
-#print(h.error())
+buttons = ["l_rim", "r_rim", "l_head", "r_head"]
+
+neutral = [0, 0, 15, 128, 128, 128, 128, 0]
+
 old_buf = []
 while(True):
     buf = h.read(512)
     if(buf != old_buf):
         keys = []
-        for i in buf:
-            keys += [int.from_bytes([i], 'big')]
+        for i, b in buf.enumerate():
+            keys += [int.from_bytes([b], 'big') - neutral[i]]
         print(keys)
     old_buf = buf
