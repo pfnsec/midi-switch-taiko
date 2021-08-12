@@ -1,12 +1,14 @@
 
-#include "buttons.h"
-
 #include <zephyr.h>
 #include <device.h>
 #include <drivers/gpio.h>
 #include <sys/util.h>
 #include <sys/printk.h>
 #include <inttypes.h>
+
+#include "buttons.h"
+#include "midi.h"
+#include "notes.h"
 
 
 static const struct gpio_dt_spec button = GPIO_DT_SPEC_GET_OR(SW0_NODE, gpios,
@@ -51,19 +53,92 @@ void buttons_init() {
 }
 
 
-void read_buttons(drum_state *state) {
-    int but = gpio_pin_get_dt(&button);
-    int head_left = 0;
-    if(but > 0) {
-        head_left = (1 << 2);
+#define DRUM_COOLDOWN 10
+
+
+static uint8_t drum_cooldown[8];
+
+void update_cooldown(uint8_t note) {
+
+    switch(note) {
+        case SNARE:
+            drum_cooldown[SNARE_I] = DRUM_COOLDOWN;
+            break;
+        case HI_TOM:
+            drum_cooldown[HI_TOM_I] = DRUM_COOLDOWN;
+            break;
+        case MID_TOM:
+            drum_cooldown[MID_TOM_I] = DRUM_COOLDOWN;
+            break;
+        case LOW_TOM:
+            drum_cooldown[LOW_TOM_I] = DRUM_COOLDOWN;
+            break;
+        case CRASH:
+            drum_cooldown[CRASH_I] = DRUM_COOLDOWN;
+            break;
+        case RIDE:
+            drum_cooldown[RIDE_I] = DRUM_COOLDOWN;
+            break;
+        case HI_HAT:
+            drum_cooldown[HI_HAT_I] = DRUM_COOLDOWN;
+            break;
+        default:
+            break;
     }
+}
+
+void read_buttons(drum_state *state) {
+    midi_message *msg;
+    msg = midi_read();
 
     state->state_0 = 0;
-    state->state_1 = 0 | head_left;
+    state->state_1 = 0;
     state->state_2 = 15;
     state->state_3 = 128;
     state->state_4 = 128;
     state->state_5 = 128;
     state->state_6 = 128;
     state->state_7 = 0;
+
+    if(msg != NULL) {
+        //printk("NOTE %d, VEL %d\n", msg->note, msg->velocity);
+        if(msg->velocity > 0) {
+            update_cooldown(msg->note);
+        }
+        midi_free(msg);
+    }
+
+    if(drum_cooldown[SNARE_I] > 0) {
+        state->state_1 |= 4;
+    }
+
+    if(drum_cooldown[HI_TOM_I] > 0) {
+        state->state_0 |= 64;
+    }
+
+    if(drum_cooldown[MID_TOM_I] > 0) {
+        state->state_0 |= 128;
+    }
+
+    if(drum_cooldown[LOW_TOM_I] > 0) {
+        state->state_1 |= 8;
+    }
+
+    if(drum_cooldown[CRASH_I] > 0) {
+        state->state_0 |= 4;
+    }
+
+    if(drum_cooldown[RIDE_I] > 0) {
+        state->state_0 |= 48;
+    }
+
+    if(drum_cooldown[HI_HAT_I] > 0) {
+        state->state_1 |= 2;
+    }
+
+    for(int i = 0; i <= DRUM_I_MAX; i++) {
+        if(drum_cooldown[i] > 0) {
+            drum_cooldown[i]--;
+        }
+    }
 }
