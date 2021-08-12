@@ -8,9 +8,13 @@
 #include <init.h>
 #include <drivers/uart.h>
 
+#include "midi.h"
+
+static K_FIFO_DEFINE(midi_fifo);
 
 static struct device *midi_uart_dev;
 
+static midi_message latest_message;
 
 static void midi_uart_isr(const struct device *unused, void *user_data) {
 	ARG_UNUSED(unused);
@@ -30,6 +34,10 @@ static void midi_uart_isr(const struct device *unused, void *user_data) {
         static uint8_t chr; 
 
         int rx = uart_fifo_read(midi_uart_dev, &chr, sizeof(chr));
+        if(rx) {
+            latest_message.chr = chr;
+            k_fifo_put(&midi_fifo, &latest_message);
+        }
 
         //LOG_DBG("read %d req %d", rx, len);
 		printk("rx %d, chr %c\n", rx, chr);
@@ -68,4 +76,8 @@ int midi_init() {
 	uart_irq_rx_enable(midi_uart_dev);
 
 	return 0;
+}
+
+midi_message *midi_read() {
+    return k_fifo_get(&midi_fifo, K_NO_WAIT);
 }
