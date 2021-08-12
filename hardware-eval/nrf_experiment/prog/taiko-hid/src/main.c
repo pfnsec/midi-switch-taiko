@@ -25,7 +25,7 @@ static ATOMIC_DEFINE(hid_ep_in_busy, 1);
 
 #define HID_EP_BUSY_FLAG	0
 #define REPORT_ID_1		0x01
-#define REPORT_PERIOD		K_MSEC(17)
+#define REPORT_PERIOD		K_MSEC(5)
 
 static struct report {
 	uint8_t id;
@@ -122,7 +122,7 @@ static void int_in_ready_cb(const struct device *dev)
 static void on_idle_cb(const struct device *dev, uint16_t report_id)
 {
 	LOG_DBG("On idle callback");
-	k_work_submit(&report_send);
+	//k_work_submit(&report_send);
 }
 
 static void report_event_handler(struct k_timer *dummy)
